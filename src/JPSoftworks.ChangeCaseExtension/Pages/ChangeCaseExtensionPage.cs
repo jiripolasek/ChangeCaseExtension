@@ -112,11 +112,12 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         }
 
         var detectAndExtractWords = StringCaseDetector.DetectAndExtractWordsMultiLine(textToTransform);
-        if (detectAndExtractWords.HasSpecialSeparators)
+        if (detectAndExtractWords is { HasSpecialSeparators: true, HasInnerWhitespace: false })
         {
-            var stringedLines = detectAndExtractWords.Lines.Select(static line => string.Join(" ", line.Words))
+            var recomposedLines = detectAndExtractWords.Lines
+                .Select(static line => string.Join(" ", line.Words))
                 .ToArray();
-            var newString = string.Join(Environment.NewLine, stringedLines).Trim();
+            var newString = string.Join(Environment.NewLine, recomposedLines).Trim();
             result.Add(new ListItem(new UpdateSearchTextCommand(newString, this))
             {
                 Title = "Split input using special characters",

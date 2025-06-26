@@ -228,13 +228,15 @@ public static class StringCaseDetector
                 continue;
             }
 
-            // Handle lines that contain spaces (not special case format)
-            if (line.Any(c => char.IsWhiteSpace(c) && c != '\t'))
+            // Handle lines that contain spaces
+            var trimmedLine = line.Trim();
+            if (trimmedLine.Any(static c => char.IsWhiteSpace(c)))
             {
-                // Return the entire line as a single element
                 lineResult.HasWords = true;
-                lineResult.Words = [line.Trim()];
+                lineResult.Words = trimmedLine.Split();
+                lineResult.HasInnerWhitespace = true;
                 result.Lines.Add(lineResult);
+                result.HasInnerWhitespace = true;
                 continue;
             }
 
@@ -306,6 +308,7 @@ public static class StringCaseDetector
         public char? MostFrequentSeparator { get; set; }
         public Dictionary<char, int> SeparatorStatistics { get; set; }
         public List<LineResult> Lines { get; set; } = [];
+        public bool HasInnerWhitespace { get; set; }
     }
 
     public class LineResult
@@ -315,5 +318,6 @@ public static class StringCaseDetector
         public bool HasWords { get; set; } // True if line has content (not empty)
         public string[] Words { get; set; } // Always contains words (unless line is empty)
         public bool WasParsed => this.Words != null && this.Words.Length > 1; // True if special format was detected
+        public bool HasInnerWhitespace { get; set; }
     }
 }
