@@ -47,7 +47,7 @@ internal static class CaseTransformers
         return string.Concat(words.Select(static (word, index) =>
             index == 0
                 ? word.ToLowerInvariant()
-                : char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+                : char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToTitleCase(string input)
@@ -69,7 +69,7 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Concat(words.Select(static word =>
-            char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToConstantCase(string input)
@@ -91,7 +91,7 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Join("-",
-            words.Select(static word => char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            words.Select(static word => char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToLowerCase(string input)
@@ -102,7 +102,7 @@ internal static class CaseTransformers
     internal static string ToLowerFirst(string input)
     {
         if (string.IsNullOrWhiteSpace(input)) return input;
-        return char.ToLowerInvariant(input[0]) + input.Substring(1);
+        return char.ToLowerInvariant(input[0]) + input[1..];
     }
 
     internal static string ToNoCase(string input)
@@ -129,7 +129,7 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Concat(words.Select(static word =>
-            char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToPascalSnakeCase(string input)
@@ -137,7 +137,7 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Join("_",
-            words.Select(static word => char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            words.Select(static word => char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToPathCase(string input)
@@ -170,7 +170,7 @@ internal static class CaseTransformers
 
         return string.Join(" ", words.Select(static (word, index) =>
             index == 0
-                ? char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()
+                ? char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()
                 : word.ToLowerInvariant()));
     }
 
@@ -196,7 +196,7 @@ internal static class CaseTransformers
     internal static string ToUpperFirst(string input)
     {
         if (string.IsNullOrWhiteSpace(input)) return input;
-        return char.ToUpperInvariant(input[0]) + input.Substring(1);
+        return char.ToUpperInvariant(input[0]) + input[1..];
     }
 
     internal static string ToUpperSnakeCase(string input)
@@ -211,7 +211,7 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Join("_",
-            words.Select(static word => char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            words.Select(static word => char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 
     internal static string ToUpperFirstKebabCase(string input)
@@ -219,6 +219,6 @@ internal static class CaseTransformers
         var words = GetWords(input);
         if (words.Length == 0) return input;
         return string.Join("-",
-            words.Select(static word => char.ToUpperInvariant(word[0]) + word.Substring(1).ToLowerInvariant()));
+            words.Select(static word => char.ToUpperInvariant(word[0]) + word[1..].ToLowerInvariant()));
     }
 }
