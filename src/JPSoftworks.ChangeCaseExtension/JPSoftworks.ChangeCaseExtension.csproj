@@ -77,6 +77,7 @@
     <CsWinRTAotWarningLevel>2</CsWinRTAotWarningLevel>
     <!-- Suppress DynamicallyAccessedMemberTypes.PublicParameterlessConstructor in fallback code path of Windows SDK projection -->
     <WarningsNotAsErrors>IL2081</WarningsNotAsErrors>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
   </PropertyGroup>
 
   <Target Name="UpdateVersionFromManifest" BeforeTargets="BeforeBuild">
