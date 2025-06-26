@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ChangeCaseExtension (Package)": {
+      "commandName": "MsixPackage",
+      "doNotLaunchApp": true
+    },
+    "ChangeCaseExtension (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
