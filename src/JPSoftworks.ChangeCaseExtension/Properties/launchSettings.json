@@ -6,6 +6,10 @@
     },
     "ChangeCaseExtension (Unpackaged)": {
       "commandName": "Project"
+    },
+    "Start as app (Package)": {
+      "commandName": "MsixPackage",
+      "doNotLaunchApp": false
     }
   }
 }
