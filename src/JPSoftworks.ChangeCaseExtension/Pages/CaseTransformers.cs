@@ -37,8 +37,7 @@ internal static class CaseTransformers
     {
         return string.IsNullOrWhiteSpace(input)
             ? []
-            : input.Split([' ', '\t', '\n', '\r', '.', ',', ';', ':', '-', '_', '/', '\\'],
-                StringSplitOptions.RemoveEmptyEntries);
+            : input.Split();
     }
 
     internal static string ToCamelCase(string input)
