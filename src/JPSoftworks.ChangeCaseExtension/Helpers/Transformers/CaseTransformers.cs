@@ -6,7 +6,7 @@
 
 using System.Globalization;
 
-namespace JPSoftworks.ChangeCaseExtension.Pages;
+namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal static class CaseTransformers
 {

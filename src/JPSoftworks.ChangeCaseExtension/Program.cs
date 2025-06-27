@@ -23,7 +23,7 @@ public static class Program
         if (args.Length > 0 && args[0] == "-RegisterProcessAsComServer")
         {
             global::Shmuelie.WinRTServer.ComServer server = new();
-            
+
             ManualResetEvent extensionDisposedEvent = new(false);
 
             ChangeCaseExtension extensionInstance = new(extensionDisposedEvent);

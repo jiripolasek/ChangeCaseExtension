@@ -4,11 +4,10 @@
 // 
 // ------------------------------------------------------------
 
-using System.Globalization;
-
+using System.Diagnostics;
 using JPSoftworks.ChangeCaseExtension.Commands;
 using JPSoftworks.ChangeCaseExtension.Helpers;
-
+using JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 
@@ -16,38 +15,7 @@ namespace JPSoftworks.ChangeCaseExtension.Pages;
 
 internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
 {
-    private static readonly TransformationDefinition[] TransformationDefinitions =
-    [
-        new(TransformationType.AsIs, "As is", static s => s),
-        new(TransformationType.LowerCase, "lower case", CaseTransformers.ToLowerCase),
-        new(TransformationType.UpperCase, "UPPER CASE", CaseTransformers.ToUpperCase),
-        new(TransformationType.CamelCase, "camelCase", CaseTransformers.ToCamelCase),
-        new(TransformationType.PascalCase, "PascalCase", CaseTransformers.ToPascalCase),
-        new(TransformationType.CapitalCase, "Capital Case", CaseTransformers.ToCapitalCase),
-        new(TransformationType.SnakeCase, "snake_case", CaseTransformers.ToSnakeCase),
-        new(TransformationType.UpperSnakeCase, "UPPER_SNAKE_CASE", CaseTransformers.ToUpperSnakeCase),
-        new(TransformationType.PascalSnakeCase, "Pascal_Snake_Case", CaseTransformers.ToPascalSnakeCase),
-        new(TransformationType.ConstantCase, "CONSTANT_CASE", CaseTransformers.ToConstantCase),
-        new(TransformationType.KebabCase, "kebab-case", CaseTransformers.ToKebabCase),
-        new(TransformationType.KebabUpperCase, "KEBAB-UPPER-CASE", CaseTransformers.ToKebabUpperCase),
-        new(TransformationType.HeaderCase, "Header-Case", CaseTransformers.ToHeaderCase),
-        new(TransformationType.DotCase, "dot.case", CaseTransformers.ToDotCase),
-        new(TransformationType.PathCase, "path/case", CaseTransformers.ToPathCase),
-        new(TransformationType.PathBackslashCase, @"path\case\backslash", CaseTransformers.ToPathBackslashCase),
-        new(TransformationType.SentenceCase, "Sentence case", CaseTransformers.ToSentenceCase),
-        new(TransformationType.LowerFirst, "lower First", CaseTransformers.ToLowerFirst),
-        new(TransformationType.UpperFirst, "Upper first", CaseTransformers.ToUpperFirst),
-        new(TransformationType.NoCase, "no case", CaseTransformers.ToNoCase),
-        new(TransformationType.SwapCase, "sWAP cASE", CaseTransformers.ToSwapCase),
-        new(TransformationType.RandomCase, "rAndOm cAsE", CaseTransformers.ToRandomCase),
-        new(TransformationType.TitleCase, $"Title Case ({CultureInfo.CurrentCulture.DisplayName})", CaseTransformers.ToTitleCase),
-        new(TransformationType.TitleCaseInvariant, "Title Case (invariant)", CaseTransformers.ToTitleCaseInvariant),
-        new(TransformationType.UpperFirstSnakeCase, "Upper first Snake Case", CaseTransformers.ToUpperFirstSnakeCase),
-        new(TransformationType.UpperFirstKebabCase, "Upper first Kebab Case", CaseTransformers.ToUpperFirstKebabCase)
-    ];
-
     private readonly ClipboardMonitor _clipboardMonitor;
-
     private readonly HistoryManager _historyManager = new();
     private string? _lastClipboardText;
 
@@ -64,11 +32,19 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         this._clipboardMonitor = new ClipboardMonitor();
         this._clipboardMonitor.ClipboardChanged += this.ClipboardMonitorOnClipboardChanged;
         this._clipboardMonitor.StartMonitoring();
+
+        this._historyManager.HistoryChanged += OnHistoryManagerOnHistoryChanged;
+    }
+
+    private void OnHistoryManagerOnHistoryChanged(object? sender, TransformationType transformationType)
+    {
+        // force update search when history changes
+        this.ForceUpdateSearch();
     }
 
     private void ClipboardMonitorOnClipboardChanged(object? sender, EventArgs e)
     {
-        if (ClipboardHelper.GetText() != this._lastClipboardText)
+        if (ClipboardHelper.GetText().Trim() != this._lastClipboardText)
         {
             this.ForceUpdateSearch();
         }
@@ -84,13 +60,17 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         string searchText,
         CancellationToken cancellationToken)
     {
+#if MEASURE_PERF
+        Stopwatch sw = Stopwatch.StartNew();
+#endif
+
         string textToTransform = string.IsNullOrWhiteSpace(searchText) ? ClipboardHelper.GetText() : searchText;
 
         var result = new List<IListItem>();
 
         if (string.IsNullOrWhiteSpace(searchText))
         {
-            this._lastClipboardText = ClipboardHelper.GetText();
+            this._lastClipboardText = ClipboardHelper.GetText().Trim();
 
             // TODO: verify clipboard monitor
             //result.Add(new ListItem(new ReloadClipboardCommand(this))
@@ -125,8 +105,7 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
                 Icon = Icons.Replace,
                 Details = new Details
                 {
-                    Title = "Replace with detected words",
-                    Body = BuildDetailPreview(newString)
+                    Title = "Replace with detected words", Body = BuildDetailPreview(newString)
                 }
             });
         }
@@ -141,7 +120,8 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         // recent transformations
         foreach (var recentTransformationType in this._historyManager.History.Take(3))
         {
-            var definition = TransformationDefinitions.FirstOrDefault(d => d.Type == recentTransformationType);
+            var definition = TransformationRegistry.GetTransformations()
+                .FirstOrDefault(d => d.Type == recentTransformationType);
             if (definition != null)
             {
                 var item = this.CreateTransformationItem(definition, linesToTransform, " • recently used");
@@ -151,10 +131,18 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         }
 
         // case transformations
-        foreach (var transformationDefinition in TransformationDefinitions)
+
+        var batchTransformResults = BatchTransformer.TransformAll(textToTransform);
+        foreach (var transformationDefinition in batchTransformResults.Keys)
         {
-            result.Add(this.CreateTransformationItem(transformationDefinition, linesToTransform));
+            result.Add(this.CreateTransformationItem(transformationDefinition,
+                batchTransformResults[transformationDefinition], tag: transformationDefinition.Category.DisplayName));
         }
+
+#if MEASURE_PERF
+        sw.Stop();
+        result.Add(new ListItem(new NoOpCommand()) { Title = "Total update time: " + sw.Elapsed });
+#endif
 
         return Task.FromResult<IListItem[]>([.. result]);
     }
@@ -167,19 +155,38 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
          ```
          """;
 
-    private ListItem CreateTransformationItem(TransformationDefinition definition, string[] lines, string? extraSubject = null)
+    private ListItem CreateTransformationItem(
+        TransformationDefinition definition,
+        string[] lines,
+        string? extraSubject = null,
+        string? tag = null)
     {
-        var title = definition.GetDisplayTitle();
-        var transformedLines = lines.Select(line => definition.Transform(line)).ToArray();
-        var transformed = string.Join(Environment.NewLine, transformedLines);
-        var preview = ToPreview(transformedLines);
+        var title = definition.Title ?? "";
+        var transformed = string.Join(Environment.NewLine, lines);
+        var preview = ToPreview(lines);
 
-        return new ListItem(new CopyTransformedTextCommand(transformed, definition.Type, this._historyManager))
+        var r = new ListItem(new CopyTransformedTextCommand(transformed, definition.Type, this._historyManager))
         {
             Title = preview,
             Subtitle = title + (extraSubject ?? ""),
-            Details = new Details { Title = title, Body = BuildDetailPreview(transformed) }
+            Details = new Details { Title = title, Body = BuildDetailPreview(transformed) },
+            Tags = string.IsNullOrWhiteSpace(tag) ? [] : [new Tag(tag)]
         };
+
+        if (definition.Category == TransformationCategory.Technical)
+        {
+            r.Icon = Icons.Keyboard;
+        }
+        else if (definition.Category == TransformationCategory.Text)
+        {
+            r.Icon = Icons.FontSansSerif;
+        }
+        else if (definition.Category == TransformationCategory.Separators)
+        {
+            r.Icon = Icons.Space;
+        }
+
+        return r;
     }
 
     private static string ToPreview(params string[]? lines)
@@ -217,7 +224,12 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
 
     protected override void Dispose(bool disposing)
     {
-        this._clipboardMonitor?.ClipboardChanged -= this.ClipboardMonitorOnClipboardChanged;
+        if (disposing)
+        {
+            this._historyManager.HistoryChanged -= this.OnHistoryManagerOnHistoryChanged;
+            this._clipboardMonitor.ClipboardChanged -= this.ClipboardMonitorOnClipboardChanged;
+        }
+
         base.Dispose(disposing);
     }
 }

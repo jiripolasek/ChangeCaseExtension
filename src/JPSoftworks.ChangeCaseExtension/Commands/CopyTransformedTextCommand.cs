@@ -6,7 +6,7 @@
 
 using System;
 using JPSoftworks.ChangeCaseExtension.Helpers;
-using JPSoftworks.ChangeCaseExtension.Pages;
+using JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 using Microsoft.CommandPalette.Extensions;
 using Microsoft.CommandPalette.Extensions.Toolkit;
 

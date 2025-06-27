@@ -4,7 +4,7 @@
 // 
 // ------------------------------------------------------------
 
-namespace JPSoftworks.ChangeCaseExtension.Pages;
+namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal enum TransformationType
 {
@@ -33,5 +33,9 @@ internal enum TransformationType
     TitleCase,
     TitleCaseInvariant,
     UpperFirstSnakeCase,
-    UpperFirstKebabCase
+    UpperFirstKebabCase,
+    RemoveDiacritics,
+    RemoveSpecialCharacters,
+    RemoveDuplicateWhitespace,
+    SpaceCase
 }
