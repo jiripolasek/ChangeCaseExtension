@@ -13,28 +13,42 @@ Transform text case directly in the [Command Palette](https://learn.microsoft.co
 This extension allows you to change the case of text in Clipboard or directly entered into the Command Palette without the need to copy it to another application or use a separate tool.
 
 You can choose from the following transformations:
-- `camelCase`
-- `Capital Case`
-- `CONSTANT_CASE` (aka `MACRO_CASE`)
-- `dot.case`
-- `Header-Case` (aka `Train-Case`)
-- `lower case`
-- `lower First`
-- `kebab-case` (aka `param-case)`
-- `KEBAB-UPPER-CASE`
-- `PascalCase`
-- `Pascal_Snake_Case`
-- `path/case`
-- `path\case\with\backshlash`
-- `rAndOm cAsE` (aka `sPonGE cAsE`)
-- `Sentence case`
-- `snake_case`
-- `sWAP cASE`
-- `Title Case`
-- `UPPER CASE`
-- `Upper first`
+
+- **General**
+  - `Capital Case`
+  - `lower case`
+  - `lower First`
+  - `rAndOm cAsE` (aka `sPonGE cAsE`)
+  - `Sentence case`
+  - `sWAP cASE`
+  - `Title Case` (Chicago style)
+  - `UPPER CASE`
+  - `Upper first`
+
+- **Technical**
+  - `camelCase`
+  - `CONSTANT_CASE` (aka `MACRO_CASE`)
+  - `Header-Case` (aka `Train-Case`)
+  - `kebab-case` (aka `param-case)`
+  - `KEBAB-UPPER-CASE`
+  - `PascalCase`
+  - `Pascal_Snake_Case`
+  - `snake_case`
+- **Separators**
+  - `space case`
+  - `dot.case`
+  - `path/case`
+  - `path\case\with\backshlash`
+
+- **Cleanup**
+  - Remove diacritics
+  - Remove special symbols
+  - Remove extra spaces, tabulators, or lines
 
 Change Case extension can also be used to convert text from one case to another (for example from `snake_case` to `kebab-case`, or from `camelCase` to `PascalCase`) by automatically detecting the words separated by special characters or capitalization.
+
+## Screenshot
+![Hero Screenshot](art/hero-screenshot.png)
 
 ## Installation
 
