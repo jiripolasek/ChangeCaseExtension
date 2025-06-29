@@ -5,8 +5,6 @@
 // ------------------------------------------------------------
 
 using System.Diagnostics;
-using Microsoft.CommandPalette.Extensions;
-using Microsoft.CommandPalette.Extensions.Toolkit;
 
 namespace JPSoftworks.ChangeCaseExtension.Pages;
 
@@ -182,6 +180,7 @@ internal abstract class AsyncDynamicListPage : DynamicListPage, IDisposable
             }
             catch (Exception ex)
             {
+                Logger.LogError(ex);
                 this.HandleSearchError(ex, searchText);
             }
             finally
@@ -217,25 +216,8 @@ internal abstract class AsyncDynamicListPage : DynamicListPage, IDisposable
 
         lock (this._itemsLock)
         {
-            var oldItems = this._currentItems;
-
-            if (oldItems.Length != newItems.Length)
-            {
-                this._currentItems = newItems;
-                itemsChanged = true;
-            }
-            else
-            {
-                for (var i = 0; i < oldItems.Length; i++)
-                {
-                    if (!Equals(oldItems[i], newItems[i]))
-                    {
-                        this._currentItems = newItems;
-                        itemsChanged = true;
-                        break;
-                    }
-                }
-            }
+            this._currentItems = newItems;
+            itemsChanged = true;
         }
 
         if (itemsChanged)

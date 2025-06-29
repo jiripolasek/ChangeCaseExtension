@@ -4,8 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using Microsoft.CommandPalette.Extensions.Toolkit;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers;
 
 internal static class Icons
@@ -26,6 +24,10 @@ internal static class Icons
     public static IconInfo Space { get; } = new("\ue75d");
 
     public static IconInfo View { get; } = new("\ue890");
+
+    public static IconInfo Broom { get; } = IconHelpers.FromRelativePaths(
+        @"Assets\Icons\ic_fluent_broom_24_regular_light.svg",
+        @"Assets\Icons\ic_fluent_broom_24_regular_dark.svg");
 
     public static IconInfo ChangeCaseIcon { get; }
         = IconHelpers.FromRelativePath("Assets\\Square44x44Logo.targetsize-40_altform-unplated.png");

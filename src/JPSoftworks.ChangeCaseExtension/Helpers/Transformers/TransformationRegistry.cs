@@ -4,17 +4,12 @@
 // 
 // ------------------------------------------------------------
 
-using System.Globalization;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal static class TransformationRegistry
 {
     private static readonly TransformationDefinition[] TransformationDefinitions =
     [
-        new TransformationDefinitionWords(TransformationType.AsIs, "input as is (no change)", TransformationCategory.Text,
-            CaseTransformersOnArray.ToNoCase),
-
         // text
         new TransformationDefinitionWords(TransformationType.LowerCase, "lower case", TransformationCategory.Text,
             CaseTransformersOnArray.ToLowerCase),
@@ -28,11 +23,9 @@ internal static class TransformationRegistry
             CaseTransformersOnArray.ToUpperFirst),
         new TransformationDefinitionWords(TransformationType.CapitalCase, "Capital Case", TransformationCategory.Text,
             CaseTransformersOnArray.ToCapitalCase),
-        new TransformationDefinitionWords(TransformationType.TitleCase,
-            $"Title Case ({CultureInfo.CurrentCulture.DisplayName})", TransformationCategory.Text,
-            CaseTransformersOnArray.ToTitleCase),
-        new TransformationDefinitionWords(TransformationType.TitleCaseInvariant, "Title Case (invariant)",
-            TransformationCategory.Text, CaseTransformersOnArray.ToTitleCaseInvariant),
+        new TransformationDefinitionAll(TransformationType.TitleCase, "Title Case (Chicago style)",
+            TransformationCategory.Text,
+            ChicagoTitleCaseConverter.ToChicagoTitleCase),
         new TransformationDefinitionWords(TransformationType.SwapCase, "sWAP cASE", TransformationCategory.Text,
             CaseTransformersOnArray.ToSwapCase),
         new TransformationDefinitionWords(TransformationType.RandomCase, "rAndOm cAsE", TransformationCategory.Text,
@@ -77,7 +70,7 @@ internal static class TransformationRegistry
             TransformationCategory.Cleanup, StringNormalizer.RemoveDiacritics),
         new TransformationDefinitionAll(TransformationType.RemoveSpecialCharacters, "Remove special characters",
             TransformationCategory.Cleanup, StringNormalizer.RemoveSpecialCharacters),
-        new TransformationDefinitionAll(TransformationType.RemoveDuplicateWhitespace, "Remove duplicate spaces",
+        new TransformationDefinitionAll(TransformationType.RemoveDuplicateWhitespace, "Remove duplicate spaces, lines and tabs",
             TransformationCategory.Cleanup, StringNormalizer.RemoveDuplicateWhitespacePerformance)
     ];
 

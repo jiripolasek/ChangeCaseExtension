@@ -4,11 +4,7 @@
 // 
 // ------------------------------------------------------------
 
-using System;
-using System.Threading;
 using JPSoftworks.CommandPalette.Extensions.Toolkit.Helpers;
-using JPSoftworks.CommandPalette.Extensions.Toolkit.Logging;
-using Microsoft.CommandPalette.Extensions;
 using Shmuelie.WinRTServer.CsWinRT;
 
 namespace JPSoftworks.ChangeCaseExtension;

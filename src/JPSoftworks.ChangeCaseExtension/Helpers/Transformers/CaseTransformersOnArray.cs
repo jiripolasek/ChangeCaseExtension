@@ -4,8 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using System.Globalization;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal static class CaseTransformersOnArray

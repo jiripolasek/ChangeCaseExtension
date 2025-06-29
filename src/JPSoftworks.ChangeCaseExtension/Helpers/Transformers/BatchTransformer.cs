@@ -4,15 +4,13 @@
 // 
 // ------------------------------------------------------------
 
-using JPSoftworks.CommandPalette.Extensions.Toolkit.Logging;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal static class BatchTransformer
 {
     public static Dictionary<TransformationDefinition, string[]> TransformAll(string input)
     {
-        var results = new Dictionary<TransformationDefinition, string[]>();
+        var results = new Dictionary<TransformationDefinition, string[]>(new TransformationDefinitionByTypeEqualityComparer());
 
         var transformations = TransformationRegistry.GetTransformations();
         foreach (var transformationsByCategory in transformations.GroupBy(static t => t.Category))
@@ -51,7 +49,7 @@ internal static class BatchTransformer
                     }
                     else if (transformation is TransformationDefinitionAll allTransformation)
                     {
-                        results[transformation] = [allTransformation.Transform(inputTemp)];
+                        results[transformation] = [..allTransformation.Transform(inputTemp).ToLines()];
                     }
                 }
                 catch (Exception ex)
@@ -65,5 +63,21 @@ internal static class BatchTransformer
         }
 
         return results;
+    }
+
+    private class TransformationDefinitionByTypeEqualityComparer : IEqualityComparer<TransformationDefinition>
+    {
+        public bool Equals(TransformationDefinition? x, TransformationDefinition? y)
+        {
+            if (x is null || y is null)
+            {
+                return false;
+            }
+            return x.Type == y.Type;
+        }
+        public int GetHashCode(TransformationDefinition obj)
+        {
+            return obj.Type.GetHashCode();
+        }
     }
 }

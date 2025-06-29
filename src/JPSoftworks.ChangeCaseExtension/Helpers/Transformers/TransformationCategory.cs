@@ -17,8 +17,8 @@ internal record TransformationCategory(
     Func<string, string>? FilePreprocessor = null)
 {
     public static readonly TransformationCategory Text = new(
-        "Text",
-        "Preserves diacritics and linguistic features.",
+        Strings.TransformationCategory_Text_Title!,
+        Strings.TransformationCategory_Text_Description!,
         IsPreservingDiacritics: true,
         IsPreservingCasing: true,
         IsPreservingSeparators: true,
@@ -26,17 +26,17 @@ internal record TransformationCategory(
         LinePreprocessor: null);
 
     public static readonly TransformationCategory Technical = new(
-        "Technical",
-        "Normalizes for code identifiers (removes diacritics, etc.).",
+        Strings.TransformationCategory_Technical_Title!,
+        Strings.TransformationCategory_Technical_Description!,
         IsPreservingDiacritics: false,
         IsPreservingCasing: false,
         IsPreservingSeparators: false,
         IsPreservingSpecialCharacters: false,
-        LinePreprocessor: Preprocessor);
+        LinePreprocessor: WhitespaceLinePreprocessor);
 
     public static readonly TransformationCategory Separators = new(
-        "Separators",
-        "Handles separators but doesn't change case.",
+        Strings.TransformationCategory_Separators_Title!,
+        Strings.TransformationCategory_Separators_Description!,
         IsPreservingDiacritics: true,
         IsPreservingCasing: true,
         IsPreservingSeparators: true,
@@ -44,20 +44,20 @@ internal record TransformationCategory(
         FilePreprocessor: static arg =>
         {
             var r = StringCaseDetector.DetectAndExtractWordsMultiLine(arg);
-            return r is { HasInnerWhitespace: false, HasSpecialSeparators: true }
-                ? arg.Replace(r.MostFrequentSeparator!.Value, ' ')
+            return r is { HasInnerWhitespace: false, HasSpecialSeparators: true, MostFrequentSeparator: not null }
+                ? arg.Replace(r.MostFrequentSeparator.Value, ' ')
                 : arg;
         });
 
     public static readonly TransformationCategory Cleanup = new(
-        "Special",
-        "Custom behavior that may not fit other categories.",
+        Strings.TransformationCategory_Cleanup_Title!,
+        Strings.TransformationCategory_Cleanup_Description!,
         IsPreservingDiacritics: false,
         IsPreservingCasing: false,
         IsPreservingSeparators: false,
         IsPreservingSpecialCharacters: true);
 
-    private static string[] Preprocessor(string arg)
+    private static string[] WhitespaceLinePreprocessor(string arg)
     {
         arg = StringNormalizer.RemoveDiacritics(arg);
         arg = StringNormalizer.ReplaceSpecialCharacters(arg);

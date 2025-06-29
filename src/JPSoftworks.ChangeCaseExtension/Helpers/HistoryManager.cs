@@ -4,8 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers;
 
 internal sealed class HistoryManager

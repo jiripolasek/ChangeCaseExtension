@@ -4,10 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using JPSoftworks.ChangeCaseExtension.Pages;
-using Microsoft.CommandPalette.Extensions;
-using Microsoft.CommandPalette.Extensions.Toolkit;
-
 namespace JPSoftworks.ChangeCaseExtension.Commands;
 
 internal sealed partial class ReloadClipboardCommand : InvokableCommand

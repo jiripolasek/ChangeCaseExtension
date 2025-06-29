@@ -4,10 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using JPSoftworks.ChangeCaseExtension.Helpers;
-using Microsoft.CommandPalette.Extensions;
-using Microsoft.CommandPalette.Extensions.Toolkit;
-
 namespace JPSoftworks.ChangeCaseExtension;
 
 public sealed partial class ChangeCaseExtensionCommandsProvider : CommandProvider
@@ -16,13 +12,14 @@ public sealed partial class ChangeCaseExtensionCommandsProvider : CommandProvide
 
     public ChangeCaseExtensionCommandsProvider()
     {
-        this.DisplayName = "Change Case";
+        this.DisplayName = Strings.Page_ChangeCase_Title!;
         this.Icon = Icons.ChangeCaseIcon;
         this._commands =
         [
-            new CommandItem(new Pages.ChangeCaseExtensionPage())
+            new CommandItem(new ChangeCaseExtensionPage())
             {
-                Title = this.DisplayName, Subtitle = "Change the case of text",
+                Title = this.DisplayName, 
+                Subtitle = Strings.Page_ChangeCase_Subtitle!,
             },
         ];
     }

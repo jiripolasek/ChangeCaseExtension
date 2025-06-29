@@ -4,9 +4,6 @@
 // 
 // ------------------------------------------------------------
 
-using System.Globalization;
-using System.Text;
-
 namespace JPSoftworks.ChangeCaseExtension.Helpers.Transformers;
 
 internal static class StringNormalizer
