@@ -55,7 +55,7 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
         this._command.Text = transformedText;
     }
 
-    internal static string BuildDetailPreview(string? textToTransform) => MarkdownHelpers.WrapInCodeBlock(textToTransform ?? "");
+    internal static string BuildDetailPreview(string? textToTransform) => MarkdownHelpers.Escape(textToTransform ?? "");
 
     internal static string ToPreview(params string[]? lines)
     {
