@@ -80,7 +80,7 @@ internal sealed partial class ClipboardMonitor : IDisposable
     private static partial IntPtr DispatchMessageW(in MSG lpMsg);
 
     [LibraryImport("user32.dll")]
-    private static partial void PostQuitMessageW(int nExitCode);
+    private static partial void PostQuitMessage(int nExitCode);
 
     [LibraryImport("kernel32.dll", EntryPoint = "GetModuleHandleW", StringMarshalling = StringMarshalling.Utf16)]
     private static partial IntPtr GetModuleHandle([MarshalAs(UnmanagedType.LPWStr)] string? lpModuleName);
@@ -141,7 +141,7 @@ internal sealed partial class ClipboardMonitor : IDisposable
 
         if (this._messageLoopThread != null)
         {
-            PostQuitMessageW(0);
+            PostQuitMessage(0);
             this._messageLoopThread.Join(5000);
             this._messageLoopThread = null;
         }
@@ -156,7 +156,7 @@ internal sealed partial class ClipboardMonitor : IDisposable
                 return IntPtr.Zero;
 
             case WM_DESTROY:
-                PostQuitMessageW(0);
+                PostQuitMessage(0);
                 return IntPtr.Zero;
         }
 
