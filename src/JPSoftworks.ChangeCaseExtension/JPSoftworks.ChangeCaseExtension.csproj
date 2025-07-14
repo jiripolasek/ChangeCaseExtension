@@ -16,6 +16,7 @@
     <Nullable>enable</Nullable>
     <DebugType>embedded</DebugType>
     <LangVersion>preview</LangVersion>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
 
     <AssemblyName>JPSoftworks.ChangeCaseExtension</AssemblyName>
     <Company>Jiri Polasek</Company>
