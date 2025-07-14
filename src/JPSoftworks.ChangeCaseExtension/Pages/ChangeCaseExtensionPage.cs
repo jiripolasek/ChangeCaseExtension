@@ -8,6 +8,7 @@ namespace JPSoftworks.ChangeCaseExtension.Pages;
 
 internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
 {
+    private readonly SettingsManager _settingsManager;
     private readonly ClipboardMonitor _clipboardMonitor;
     private readonly ClipboardPreviewListItem _clipboardPreviewItem;
     private readonly HistoryManager _historyManager = new();
@@ -17,8 +18,10 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
 
 
 
-    public ChangeCaseExtensionPage()
+    public ChangeCaseExtensionPage(SettingsManager settingsManager)
     {
+        this._settingsManager = settingsManager;
+
         this.Icon = Icons.ChangeCaseIcon;
         this.Title = Strings.Page_ChangeCase_Title!;
         this.Name = Strings.Page_ChangeCase_Name!;
@@ -42,7 +45,17 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         };
 
         this._pinnedTransformationsManager.PinnedChanged += this.OnInstanceOnPinnedChanged;
+        this._settingsManager.Settings.SettingsChanged += this.SettingsOnSettingsChanged;
     }
+
+
+
+    private void SettingsOnSettingsChanged(object sender, Settings args)
+    {
+        this.ForceUpdateSearch();
+    }
+
+
 
     private void OnInstanceOnPinnedChanged(object? o, TransformationType transformationType)
     {
@@ -132,15 +145,27 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
             .Select(recentTransformationType =>
                 batchTransformResults.FirstOrDefault(t => t.Key.Type == recentTransformationType))
             .Select(pair => new RecentTransformationListItem(this, pair.Key, pair.Value, this._historyManager, this._pinnedTransformationsManager))
-            .Take(3);
-        result.AddRange(localRecentItems);
+            .Take(this._settingsManager.RecentItemsCount);
 
         // favorite transformation items
-        var pinnedTransformation = this._pinnedTransformationsManager.Pinned.Except(this._historyManager.History)
+        var pinnedTransformation = this._pinnedTransformationsManager.Pinned
             .Select(favoriteTransformationType =>
                 batchTransformResults.FirstOrDefault(t => t.Key.Type == favoriteTransformationType))
             .Select(pair => new PinnedTransformationListItem(this, pair.Key, pair.Value, this._historyManager, this._pinnedTransformationsManager));
-        result.AddRange(pinnedTransformation);
+
+        switch (this._settingsManager.SpecialItemsOrder)
+        {
+            case SpecialItemsOrder.PinnedFirst:
+                result.AddRange(pinnedTransformation);
+                result.AddRange(localRecentItems);
+                break;
+            case SpecialItemsOrder.RecentFirst:
+            default:
+                result.AddRange(localRecentItems);
+                result.AddRange(pinnedTransformation);
+                break;
+        }
+
 
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -174,6 +199,7 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
             this._clipboardMonitor.Dispose();
 
             this._pinnedTransformationsManager.PinnedChanged -= this.OnInstanceOnPinnedChanged;
+            this._settingsManager.Settings.SettingsChanged -= this.SettingsOnSettingsChanged;
         }
 
         base.Dispose(disposing);

@@ -10,17 +10,22 @@ public sealed partial class ChangeCaseExtensionCommandsProvider : CommandProvide
 {
     private readonly ICommandItem[] _commands;
 
+    private readonly SettingsManager _settingsManager = new();
+
     public ChangeCaseExtensionCommandsProvider()
     {
         this.DisplayName = Strings.Page_ChangeCase_Title!;
         this.Icon = Icons.ChangeCaseIcon;
         this._commands =
         [
-            new CommandItem(new ChangeCaseExtensionPage())
+            new CommandItem(new ChangeCaseExtensionPage(this._settingsManager))
             {
-                Title = this.DisplayName, 
+                Title = this.DisplayName,
                 Subtitle = Strings.Page_ChangeCase_Subtitle!,
-            },
+                MoreCommands = [
+                    new CommandContextItem(_settingsManager.Settings.SettingsPage)
+                    ]
+            }
         ];
     }
 

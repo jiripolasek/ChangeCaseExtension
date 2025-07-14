@@ -195,4 +195,28 @@
   <data name="Command_Pin_Result" xml:space="preserve">
     <value>Pinned to the top</value>
   </data>
+  <data name="Settings_SpecialItemsOrder_Choice_RecentFirst" xml:space="preserve">
+	  <value>Recent transformations first</value>
+  </data>
+  <data name="Settings_SpecialItemsOrder_Choice_PinnedFirst" xml:space="preserve">
+	  <value>Pinned transformations first</value>
+  </data>
+  <data name="Settings_SpecialItemsOrder_Label" xml:space="preserve">
+	  <value>Items order</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Label" xml:space="preserve">
+	  <value>Number of displayed recently used transformations</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_None" xml:space="preserve">
+	  <value>None</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_1" xml:space="preserve">
+	  <value>1</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_2" xml:space="preserve">
+	  <value>2</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_3" xml:space="preserve">
+	  <value>3</value>
+  </data>
 </root>
