@@ -172,12 +172,51 @@
     <value>Custom behavior that may not fit other categories.</value>
   </data>
   <data name="Page_ChangeCase_Subtitle" xml:space="preserve">
-	  <value>Change the case of text</value>
+    <value>Change the case of text</value>
   </data>
   <data name="Page_ChangeCase_EmptyContent_Title" xml:space="preserve">
-	  <value>Nothing to show</value>
+    <value>Nothing to show</value>
   </data>
   <data name="Page_ChangeCase_EmptyContent_Subtitle" xml:space="preserve">
-	  <value>Type text to input above or copy text to your Clipboard to view results</value>
+    <value>Type text to input above or copy text to your Clipboard to view results</value>
+  </data>
+  <data name="Command_PinnedTransformation_Pinned" xml:space="preserve">
+    <value>pinned</value>
+  </data>
+  <data name="Command_Pin_Title" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="Command_Unpin_Title" xml:space="preserve">
+    <value>Unpin</value>
+  </data>
+  <data name="Command_Unpin_Result" xml:space="preserve">
+    <value>Unpinned</value>
+  </data>
+  <data name="Command_Pin_Result" xml:space="preserve">
+    <value>Pinned to the top</value>
+  </data>
+  <data name="Settings_SpecialItemsOrder_Choice_RecentFirst" xml:space="preserve">
+	  <value>Recent transformations first</value>
+  </data>
+  <data name="Settings_SpecialItemsOrder_Choice_PinnedFirst" xml:space="preserve">
+	  <value>Pinned transformations first</value>
+  </data>
+  <data name="Settings_SpecialItemsOrder_Label" xml:space="preserve">
+	  <value>Items order</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Label" xml:space="preserve">
+	  <value>Number of displayed recently used transformations</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_None" xml:space="preserve">
+	  <value>None</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_1" xml:space="preserve">
+	  <value>1</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_2" xml:space="preserve">
+	  <value>2</value>
+  </data>
+  <data name="Settings_RecentItemsCount_Choice_3" xml:space="preserve">
+	  <value>3</value>
   </data>
 </root>

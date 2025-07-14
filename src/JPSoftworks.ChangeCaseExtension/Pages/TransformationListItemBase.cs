@@ -4,6 +4,8 @@
 // 
 // ------------------------------------------------------------
 
+using Windows.System;
+
 namespace JPSoftworks.ChangeCaseExtension.Pages;
 
 internal abstract partial class TransformationListItemBase : ListItem, IEquatable<TransformationListItemBase>
@@ -18,6 +20,7 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
         TransformationDefinition definition,
         string[] lines,
         HistoryManager historyManager,
+        PinnedTransformationsManager pinnedTransformationsManager,
         string? tag = null,
         string? extraSubject = null)
     {
@@ -27,6 +30,21 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
         this.Subtitle = this.Definition.Title + extraSubject;
         this.Tags = string.IsNullOrWhiteSpace(tag) ? [] : [new Tag(tag)];
         this._lines = lines;
+
+        if (pinnedTransformationsManager.IsPinned(this.Definition.Type))
+        {
+            this.MoreCommands = [
+                new CommandContextItem(new UnpinFavoriteTransformationCommand(this.Definition)) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, vkey: VirtualKey.D) }
+            ];
+        }
+        else
+        {
+            this.MoreCommands = [
+
+                new CommandContextItem(new PinFavoriteTransformationCommand(this.Definition)) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, vkey: VirtualKey.D) },
+            ];
+        }
+
 
         if (definition.Category == TransformationCategory.Technical)
         {

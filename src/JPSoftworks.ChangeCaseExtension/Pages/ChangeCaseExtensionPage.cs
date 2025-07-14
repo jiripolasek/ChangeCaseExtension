@@ -8,14 +8,20 @@ namespace JPSoftworks.ChangeCaseExtension.Pages;
 
 internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
 {
+    private readonly SettingsManager _settingsManager;
     private readonly ClipboardMonitor _clipboardMonitor;
     private readonly ClipboardPreviewListItem _clipboardPreviewItem;
     private readonly HistoryManager _historyManager = new();
 
     private bool _disposed;
+    private readonly PinnedTransformationsManager _pinnedTransformationsManager = PinnedTransformationsManager.Instance;
 
-    public ChangeCaseExtensionPage()
+
+
+    public ChangeCaseExtensionPage(SettingsManager settingsManager)
     {
+        this._settingsManager = settingsManager;
+
         this.Icon = Icons.ChangeCaseIcon;
         this.Title = Strings.Page_ChangeCase_Title!;
         this.Name = Strings.Page_ChangeCase_Name!;
@@ -37,6 +43,23 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
             Subtitle = Strings.Page_ChangeCase_EmptyContent_Subtitle!,
             Icon = Icons.ChangeCaseIcon
         };
+
+        this._pinnedTransformationsManager.PinnedChanged += this.OnInstanceOnPinnedChanged;
+        this._settingsManager.Settings.SettingsChanged += this.SettingsOnSettingsChanged;
+    }
+
+
+
+    private void SettingsOnSettingsChanged(object sender, Settings args)
+    {
+        this.ForceUpdateSearch();
+    }
+
+
+
+    private void OnInstanceOnPinnedChanged(object? o, TransformationType transformationType)
+    {
+        this.ForceUpdateSearch();
     }
 
     private void OnHistoryManagerOnHistoryChanged(object? sender, TransformationType transformationType)
@@ -112,7 +135,7 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
                 }
             });
         }
-        
+
         cancellationToken.ThrowIfCancellationRequested();
 
         var batchTransformResults = BatchTransformer.TransformAll(textToTransform);
@@ -121,9 +144,28 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
         var localRecentItems = this._historyManager.History
             .Select(recentTransformationType =>
                 batchTransformResults.FirstOrDefault(t => t.Key.Type == recentTransformationType))
-            .Select(pair => new RecentTransformationListItem(this, pair.Key, pair.Value, this._historyManager))
-            .Take(3);
-        result.AddRange(localRecentItems);
+            .Select(pair => new RecentTransformationListItem(this, pair.Key, pair.Value, this._historyManager, this._pinnedTransformationsManager))
+            .Take(this._settingsManager.RecentItemsCount);
+
+        // favorite transformation items
+        var pinnedTransformation = this._pinnedTransformationsManager.Pinned
+            .Select(favoriteTransformationType =>
+                batchTransformResults.FirstOrDefault(t => t.Key.Type == favoriteTransformationType))
+            .Select(pair => new PinnedTransformationListItem(this, pair.Key, pair.Value, this._historyManager, this._pinnedTransformationsManager));
+
+        switch (this._settingsManager.SpecialItemsOrder)
+        {
+            case SpecialItemsOrder.PinnedFirst:
+                result.AddRange(pinnedTransformation);
+                result.AddRange(localRecentItems);
+                break;
+            case SpecialItemsOrder.RecentFirst:
+            default:
+                result.AddRange(localRecentItems);
+                result.AddRange(pinnedTransformation);
+                break;
+        }
+
 
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -133,7 +175,8 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
                 this,
                 transformationDefinition,
                 batchTransformResults[transformationDefinition],
-                this._historyManager));
+                this._historyManager,
+                this._pinnedTransformationsManager));
         result.AddRange(tis);
 
 #if MEASURE_PERF
@@ -154,6 +197,9 @@ internal sealed partial class ChangeCaseExtensionPage : AsyncDynamicListPage
             this._historyManager.HistoryChanged -= this.OnHistoryManagerOnHistoryChanged;
             this._clipboardMonitor.ClipboardChanged -= this.ClipboardMonitorOnClipboardChanged;
             this._clipboardMonitor.Dispose();
+
+            this._pinnedTransformationsManager.PinnedChanged -= this.OnInstanceOnPinnedChanged;
+            this._settingsManager.Settings.SettingsChanged -= this.SettingsOnSettingsChanged;
         }
 
         base.Dispose(disposing);

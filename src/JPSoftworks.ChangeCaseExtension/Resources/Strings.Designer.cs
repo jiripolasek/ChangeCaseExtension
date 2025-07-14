@@ -79,6 +79,33 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pinned to the top.
+        /// </summary>
+        internal static string Command_Pin_Result {
+            get {
+                return ResourceManager.GetString("Command_Pin_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin.
+        /// </summary>
+        internal static string Command_Pin_Title {
+            get {
+                return ResourceManager.GetString("Command_Pin_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pinned.
+        /// </summary>
+        internal static string Command_PinnedTransformation_Pinned {
+            get {
+                return ResourceManager.GetString("Command_PinnedTransformation_Pinned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to recently used.
         /// </summary>
         internal static string Command_RecentTranformations_RecentlyUsed {
@@ -111,6 +138,24 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         internal static string Command_SplitSpecial_Title {
             get {
                 return ResourceManager.GetString("Command_SplitSpecial_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpinned.
+        /// </summary>
+        internal static string Command_Unpin_Result {
+            get {
+                return ResourceManager.GetString("Command_Unpin_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpin.
+        /// </summary>
+        internal static string Command_Unpin_Title {
+            get {
+                return ResourceManager.GetString("Command_Unpin_Title", resourceCulture);
             }
         }
         
@@ -174,6 +219,78 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         internal static string Page_ChangeCase_Title {
             get {
                 return ResourceManager.GetString("Page_ChangeCase_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1.
+        /// </summary>
+        internal static string Settings_RecentItemsCount_Choice_1 {
+            get {
+                return ResourceManager.GetString("Settings_RecentItemsCount_Choice_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2.
+        /// </summary>
+        internal static string Settings_RecentItemsCount_Choice_2 {
+            get {
+                return ResourceManager.GetString("Settings_RecentItemsCount_Choice_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3.
+        /// </summary>
+        internal static string Settings_RecentItemsCount_Choice_3 {
+            get {
+                return ResourceManager.GetString("Settings_RecentItemsCount_Choice_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        internal static string Settings_RecentItemsCount_Choice_None {
+            get {
+                return ResourceManager.GetString("Settings_RecentItemsCount_Choice_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of displayed recently used transformations.
+        /// </summary>
+        internal static string Settings_RecentItemsCount_Label {
+            get {
+                return ResourceManager.GetString("Settings_RecentItemsCount_Label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pinned transformations first.
+        /// </summary>
+        internal static string Settings_SpecialItemsOrder_Choice_PinnedFirst {
+            get {
+                return ResourceManager.GetString("Settings_SpecialItemsOrder_Choice_PinnedFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recent transformations first.
+        /// </summary>
+        internal static string Settings_SpecialItemsOrder_Choice_RecentFirst {
+            get {
+                return ResourceManager.GetString("Settings_SpecialItemsOrder_Choice_RecentFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items order.
+        /// </summary>
+        internal static string Settings_SpecialItemsOrder_Label {
+            get {
+                return ResourceManager.GetString("Settings_SpecialItemsOrder_Label", resourceCulture);
             }
         }
         
