@@ -55,12 +55,12 @@ internal static class TransformationRegistry
             TransformationCategory.Technical, CaseTransformersOnArray.ToUpperFirstKebabCase),
 
         // separators
-        new TransformationDefinitionWords(TransformationType.SpaceCase, "space case", TransformationCategory.Separators,
-            CaseTransformersOnArray.ToSpaceCase),
-        new TransformationDefinitionWords(TransformationType.DotCase, "dot.case", TransformationCategory.Separators,
-            CaseTransformersOnArray.ToDotCase),
-        new TransformationDefinitionWords(TransformationType.PathCase, "path/case", TransformationCategory.Separators,
-            CaseTransformersOnArray.ToPathCase),
+        new TransformationDefinitionWords(TransformationType.SpaceCase, "space case",
+            TransformationCategory.Separators, CaseTransformersOnArray.ToSpaceCase),
+        new TransformationDefinitionWords(TransformationType.DotCase, "dot.case",
+            TransformationCategory.Separators, CaseTransformersOnArray.ToDotCase),
+        new TransformationDefinitionWords(TransformationType.PathCase, "path/case",
+            TransformationCategory.Separators, CaseTransformersOnArray.ToPathCase),
         new TransformationDefinitionWords(TransformationType.PathBackslashCase, @"path\case\backslash",
             TransformationCategory.Separators, CaseTransformersOnArray.ToPathBackslashCase),
 
@@ -70,7 +70,9 @@ internal static class TransformationRegistry
         new TransformationDefinitionAll(TransformationType.RemoveSpecialCharacters, "Remove special characters",
             TransformationCategory.Cleanup, StringNormalizer.RemoveSpecialCharacters),
         new TransformationDefinitionAll(TransformationType.RemoveDuplicateWhitespace, "Remove duplicate spaces, lines and tabs",
-            TransformationCategory.Cleanup, StringNormalizer.RemoveDuplicateWhitespacePerformance)
+            TransformationCategory.Cleanup, StringNormalizer.RemoveDuplicateWhitespacePerformance),
+        new TransformationDefinitionAll(TransformationType.RemoveDuplicateSpaces, "Remove duplicate spaces",
+            TransformationCategory.Cleanup, StringNormalizer.RemoveDuplicateSpaces)
     ];
 
     public static IReadOnlyList<TransformationDefinition> GetTransformations()
