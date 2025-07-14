@@ -6,9 +6,9 @@
 
 namespace JPSoftworks.ChangeCaseExtension.Pages;
 
-internal sealed partial class RecentTransformationListItem : TransformationListItemBase
+internal sealed partial class PinnedTransformationListItem : TransformationListItemBase
 {
-    public RecentTransformationListItem(
+    public PinnedTransformationListItem(
         IDynamicListPage parentList,
         TransformationDefinition definition,
         string[] lines,
@@ -20,8 +20,8 @@ internal sealed partial class RecentTransformationListItem : TransformationListI
             lines, 
             historyManager,
             pinnedTransformationsManager,
-            extraSubject: " • " + Strings.Command_RecentTranformations_RecentlyUsed)
+            extraSubject: " • " + Strings.Command_PinnedTransformation_Pinned!)
     {
-        this.Icon = Icons.History;
+        this.Icon = Icons.Pin;
     }
 }

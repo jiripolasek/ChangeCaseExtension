@@ -10,5 +10,6 @@ internal sealed partial class TransformationListItem(
     IDynamicListPage parentList,
     TransformationDefinition definition,
     string[] lines,
-    HistoryManager historyManager)
-    : TransformationListItemBase(parentList, definition, lines, historyManager, definition.Category.DisplayName);
+    HistoryManager historyManager,
+    PinnedTransformationsManager pinnedTransformationsManager)
+    : TransformationListItemBase(parentList, definition, lines, historyManager, pinnedTransformationsManager, definition.Category.DisplayName);

@@ -79,6 +79,33 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pinned to the top.
+        /// </summary>
+        internal static string Command_Pin_Result {
+            get {
+                return ResourceManager.GetString("Command_Pin_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pin.
+        /// </summary>
+        internal static string Command_Pin_Title {
+            get {
+                return ResourceManager.GetString("Command_Pin_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pinned.
+        /// </summary>
+        internal static string Command_PinnedTransformation_Pinned {
+            get {
+                return ResourceManager.GetString("Command_PinnedTransformation_Pinned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to recently used.
         /// </summary>
         internal static string Command_RecentTranformations_RecentlyUsed {
@@ -111,6 +138,24 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         internal static string Command_SplitSpecial_Title {
             get {
                 return ResourceManager.GetString("Command_SplitSpecial_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpinned.
+        /// </summary>
+        internal static string Command_Unpin_Result {
+            get {
+                return ResourceManager.GetString("Command_Unpin_Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpin.
+        /// </summary>
+        internal static string Command_Unpin_Title {
+            get {
+                return ResourceManager.GetString("Command_Unpin_Title", resourceCulture);
             }
         }
         
