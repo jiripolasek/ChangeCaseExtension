@@ -34,6 +34,7 @@ You can choose from the following transformations:
   - `PascalCase`
   - `Pascal_Snake_Case`
   - `snake_case`
+
 - **Separators**
   - `space case`
   - `dot.case`
@@ -43,6 +44,7 @@ You can choose from the following transformations:
 - **Cleanup**
   - Remove diacritics
   - Remove special symbols
+  - Remove extra spaces
   - Remove extra spaces, tabulators, or lines
 
 Change Case extension can also be used to convert text from one case to another (for example from `snake_case` to `kebab-case`, or from `camelCase` to `PascalCase`) by automatically detecting the words separated by special characters or capitalization.
