@@ -16,6 +16,8 @@ public sealed partial class ChangeCaseExtensionCommandsProvider : CommandProvide
     {
         this.DisplayName = Strings.Page_ChangeCase_Title!;
         this.Icon = Icons.ChangeCaseIcon;
+        this.Settings = this._settingsManager.Settings;
+
         this._commands =
         [
             new CommandItem(new ChangeCaseExtensionPage(this._settingsManager))
