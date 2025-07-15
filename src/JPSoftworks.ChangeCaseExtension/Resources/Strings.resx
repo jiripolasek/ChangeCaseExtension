@@ -219,4 +219,13 @@
   <data name="Settings_RecentItemsCount_Choice_3" xml:space="preserve">
 	  <value>3</value>
   </data>
+  <data name="CommandResult_Pasting" xml:space="preserve">
+	  <value>Pasting to active window...</value>
+  </data>
+  <data name="Command_Paste_Title" xml:space="preserve">
+	  <value>Paste</value>
+  </data>
+  <data name="Command_CopyAndKeepOpen_Title" xml:space="preserve">
+	  <value>Copy and keep open</value>
+  </data>
 </root>

@@ -4,13 +4,18 @@
 // 
 // ------------------------------------------------------------
 
+using System.Diagnostics.CodeAnalysis;
 using Windows.System;
 
 namespace JPSoftworks.ChangeCaseExtension.Pages;
 
+[SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "I know, I know, ...")]
 internal abstract partial class TransformationListItemBase : ListItem, IEquatable<TransformationListItemBase>
 {
     private readonly CopyTransformedTextCommand _command;
+    private readonly CopyTransformedTextCommand _copyAndKeepOpenCommand;
+    private readonly PasteCommand _pasteCommand;
+
     private string[] _lines;
 
     public TransformationDefinition Definition { get; }
@@ -25,25 +30,32 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
         string? extraSubject = null)
     {
         this.Definition = definition;
-        this.Command = this._command = new CopyTransformedTextCommand(parentList, "", definition.Type, historyManager);
-        this.Update(lines);
+        this.Command = this._command = new(parentList, "", definition.Type, historyManager);
         this.Subtitle = this.Definition.Title + extraSubject;
         this.Tags = string.IsNullOrWhiteSpace(tag) ? [] : [new Tag(tag)];
         this._lines = lines;
 
+        this._copyAndKeepOpenCommand = new(parentList, "", definition.Type, historyManager, keepOpen: true) { Name = Strings.Command_CopyAndKeepOpen_Title, Icon = Icons.CopyTo };
+        this._pasteCommand = new(parentList, "", definition.Type, historyManager);
+
         if (pinnedTransformationsManager.IsPinned(this.Definition.Type))
         {
             this.MoreCommands = [
+                new CommandContextItem(this._copyAndKeepOpenCommand),
+                new CommandContextItem(this._pasteCommand) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, shift:true, vkey: VirtualKey.V) },
                 new CommandContextItem(new UnpinFavoriteTransformationCommand(this.Definition)) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, vkey: VirtualKey.D) }
             ];
         }
         else
         {
             this.MoreCommands = [
-
+                new CommandContextItem(this._copyAndKeepOpenCommand),
+                new CommandContextItem(this._pasteCommand) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, shift:true, vkey: VirtualKey.V) },
                 new CommandContextItem(new PinFavoriteTransformationCommand(this.Definition)) { RequestedShortcut = KeyChordHelpers.FromModifiers(ctrl:true, vkey: VirtualKey.D) },
             ];
         }
+
+        this.Update(lines);
 
 
         if (definition.Category == TransformationCategory.Technical)
@@ -71,6 +83,8 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
         var transformedText = string.Join(Environment.NewLine, this._lines);
         this.Details = new Details { Title = this.Definition.Title, Body = BuildDetailPreview(transformedText) };
         this._command.Text = transformedText;
+        this._copyAndKeepOpenCommand.Text = transformedText;
+        this._pasteCommand.Text = transformedText;
     }
 
     internal static string BuildDetailPreview(string? textToTransform) => MarkdownHelpers.WrapInCodeBlock(textToTransform ?? "");
@@ -78,7 +92,7 @@ internal abstract partial class TransformationListItemBase : ListItem, IEquatabl
     internal static string ToPreview(params string[]? lines)
     {
         if (lines == null || lines.Length == 0)
-            return "";
+            return string.Empty;
 
         const int maxLines = 2;
         const int maxCharsPerLine = 256;

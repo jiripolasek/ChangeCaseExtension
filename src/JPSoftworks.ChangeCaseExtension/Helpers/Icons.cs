@@ -9,6 +9,8 @@ namespace JPSoftworks.ChangeCaseExtension.Helpers;
 internal static class Icons
 {
     public static IconInfo Copy { get; } = new("\uE8C8");
+    public static IconInfo CopyTo { get; } = new("\uF413");
+    public static IconInfo Paste { get; } = new("\uE77F");
     public static IconInfo History { get; } = new("\ue823");
     public static IconInfo Refresh { get; } = new("\ue777");
     public static IconInfo Replace { get; } = new("\ue845");
@@ -34,4 +36,5 @@ internal static class Icons
 
     public static IconInfo ChangeCaseIcon { get; }
         = IconHelpers.FromRelativePath("Assets\\Square44x44Logo.targetsize-40_altform-unplated.png");
+    
 }

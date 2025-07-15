@@ -14,9 +14,9 @@ internal sealed partial class CopyTransformedTextCommand : InvokableCommand
 
     public string Text { get; set; }
 
-    public CommandResult Result { get; set; } = CommandResult.ShowToast(Strings.CommandResult_CopiedToClipboard!);
+    public CommandResult Result { get; set; }
 
-    public CopyTransformedTextCommand(IDynamicListPage parentList, string text, TransformationType transformationType, HistoryManager historyManager)
+    public CopyTransformedTextCommand(IDynamicListPage parentList, string text, TransformationType transformationType, HistoryManager historyManager, bool keepOpen = false)
     {
         ArgumentNullException.ThrowIfNull(historyManager);
 
@@ -27,6 +27,11 @@ internal sealed partial class CopyTransformedTextCommand : InvokableCommand
         this.Text = text ?? "";
         this.Name = "Copy";
         this.Icon = Icons.Copy;
+        this.Result = CommandResult.ShowToast(new ToastArgs
+        {
+            Message = Strings.CommandResult_CopiedToClipboard!,
+            Result = keepOpen ? CommandResult.KeepOpen() : CommandResult.Hide()
+        });
     }
 
     public override ICommandResult Invoke()

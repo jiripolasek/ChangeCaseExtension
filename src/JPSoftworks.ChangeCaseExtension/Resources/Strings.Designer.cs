@@ -79,6 +79,24 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy and keep open.
+        /// </summary>
+        internal static string Command_CopyAndKeepOpen_Title {
+            get {
+                return ResourceManager.GetString("Command_CopyAndKeepOpen_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste.
+        /// </summary>
+        internal static string Command_Paste_Title {
+            get {
+                return ResourceManager.GetString("Command_Paste_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pinned to the top.
         /// </summary>
         internal static string Command_Pin_Result {
@@ -165,6 +183,15 @@ namespace JPSoftworks.ChangeCaseExtension.Resources {
         internal static string CommandResult_CopiedToClipboard {
             get {
                 return ResourceManager.GetString("CommandResult_CopiedToClipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pasting to active window....
+        /// </summary>
+        internal static string CommandResult_Pasting {
+            get {
+                return ResourceManager.GetString("CommandResult_Pasting", resourceCulture);
             }
         }
         
